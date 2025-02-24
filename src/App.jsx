@@ -6,10 +6,10 @@ import Sidebar from "./components/Sidebar";
 function App() {
   return (
     <div className="min-h-screen max-w-full flex">
-      {/* <Sidebar className="flex-1"/> */}
-      <div className="w-full bg-red-500">
+      <Sidebar className="flex-1"/>
+      <div className="w-full bg-red-400">
         <Routes>
-          <Route path="/" element={<Navigate to="/profile"/>} />
+          <Route path="/" element={<Navigate to="/discover"/>} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/discover" element={<Discover />} />
         </Routes>

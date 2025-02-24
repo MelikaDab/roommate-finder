@@ -10,7 +10,7 @@ import Sidebar from './components/Sidebar.jsx';
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <StrictMode>
-      <Sidebar className="flex-1"/>
+      {/* <Sidebar className="flex-1"/> */}
       <App />
     </StrictMode>
   </BrowserRouter>
