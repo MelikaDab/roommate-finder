@@ -5,8 +5,8 @@ const Profile = () => {
   const user = {
     name: "Kermit the Frog",
     budget: "$8000",
-    location: "San Francisco",
-    interests: "Hiking, Music, Tech",
+    location: "Sandy eggo",
+    interests: "stand up comedy, music, artificial intelligence",
     images: [
       "../public/kermit-snow.jpg",
       "../public/kermit-smile.webp",
@@ -66,11 +66,12 @@ const Profile = () => {
             <p className="text-2xl font-semibold text-gray-600">Budget: {user.budget}</p>
             <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
             <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests}</p>
-            <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg">
-              Match
-            </button>
           </div>
         </div>
+      </section>
+      <h1 className="text-2xl font-bold p-5">Matches</h1>
+      <section>
+
       </section>
     </div>
   );
