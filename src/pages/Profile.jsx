@@ -31,6 +31,7 @@
 //   );
 // }
 
+import { div } from "framer-motion/client";
 import { useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 
@@ -43,7 +44,7 @@ const Profile = () => {
     images: [
       "../public/kermit-snow.jpg",
       "../public/kermit-smile.webp",
-      // "https://via.placeholder.com/300x200?text=Image+3",
+      "../public/kermit-bonjo.webp", 
     ],
   };
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -63,41 +64,50 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-80 bg-white shadow-md rounded-lg overflow-hidden">
-      {/* Image Container */}
-      <div className="relative w-full h-48">
-        <img
-          src={user.images[currentImageIndex]}
-          alt="Profile"
-          className="w-full h-full object-cover"
-        />
-        
-        {/* Left and Right Navigation Buttons */}
-        <button
-          onClick={prevImage}
-          className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
-        >
-          <SlArrowLeftCircle className="w-6 h-6" />
-        </button>
-        
-        <button
-          onClick={nextImage}
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
-        >
-          <SlArrowRightCircle className="w-6 h-6" />
-        </button>
-      </div>
+    <div>
+      <section>
 
-      {/* User Information */}
-      <div className="p-4">
-        <h3 className="text-lg font-semibold">{user.name}</h3>
-        <p className="text-gray-600">Budget: {user.budget}</p>
-        <p className="text-gray-600">Location: {user.location}</p>
-        <p className="text-gray-600">Interests: {user.interests}</p>
-        <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg">
-          Match
-        </button>
-      </div>
+        <h1 className="text-2xl font-bold p-5">My Profile</h1>
+        
+        <div className="w-80 bg-white shadow-md rounded-lg overflow-hidden">
+          
+          {/* Image Container */}
+          
+          <div className="relative w-full h-48">
+            <img
+              src={user.images[currentImageIndex]}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+            
+            {/* Left and Right Navigation Buttons */}
+            <button
+              onClick={prevImage}
+              className="absolute top-1/2 left-2 transform -translate-y-1/2  text-gray-400  p-2 rounded-full"
+            >
+              <SlArrowLeftCircle className="w-6 h-6" />
+            </button>
+            
+            <button
+              onClick={nextImage}
+              className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400  p-2 rounded-full"
+            >
+              <SlArrowRightCircle className="w-6 h-6" />
+            </button>
+          </div>
+
+          {/* User Information */}
+          <div className="p-4">
+            <h3 className="text-lg font-semibold">{user.name}</h3>
+            <p className="text-gray-600">Budget: {user.budget}</p>
+            <p className="text-gray-600">Location: {user.location}</p>
+            <p className="text-gray-600">Interests: {user.interests}</p>
+            <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg">
+              Match
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
