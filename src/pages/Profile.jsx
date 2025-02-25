@@ -1,37 +1,3 @@
-// import { useState } from "react";
-
-// function Profile() {
-//   const [matches, setMatches] = useState([]);
-
-//   return (
-//     <div className="max-w-3xl mx-auto p-6">
-//       <h1 className="text-2xl font-bold">My Profile</h1>
-
-//       <div className="mt-4 p-4 bg-white shadow-md rounded-lg">
-//         <p className="font-bold text-4xl">Melika Dabiri</p>
-//         <p className="text-gray-600">Budget: $1000/month</p>
-//         <p className="text-gray-600">Location: New York</p>
-//         <p className="text-gray-600">Interests: Hiking, Music</p>
-//         {/* More profile details here */}
-//       </div>
-
-//       <h3 className="text-5xl font-bold mt-6">My Matches</h3>
-//       <div className="mt-2">
-//         {matches.length > 0 ? (
-//           matches.map((match, index) => (
-//             <div key={index} className="p-4 bg-gray-100 shadow-md rounded-lg mt-2">
-//               <p>{match.name}</p>
-//             </div>
-//           ))
-//         ) : (
-//           <p className="text-gray-500">No matches yet.</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-import { div } from "framer-motion/client";
 import { useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 
@@ -65,19 +31,17 @@ const Profile = () => {
 
   return (
     <div>
-      <section>
-
-        <h1 className="text-2xl font-bold p-5">My Profile</h1>
-        
-        <div className="w-80 bg-white shadow-md rounded-lg overflow-hidden">
+      <h1 className="text-2xl font-bold p-5">My Profile</h1>
+      <section className="flex flex-col justify-self-center ">
+        <div className="w-200 bg-white shadow-md rounded-lg overflow-hidden flex flex-col">
           
           {/* Image Container */}
           
-          <div className="relative w-full h-48">
+          <div className="relative w-full h-150">
             <img
               src={user.images[currentImageIndex]}
               alt="Profile"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
             
             {/* Left and Right Navigation Buttons */}
