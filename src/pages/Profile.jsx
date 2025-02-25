@@ -62,10 +62,10 @@ const Profile = () => {
 
           {/* User Information */}
           <div className="p-4">
-            <h3 className="text-lg font-semibold">{user.name}</h3>
-            <p className="text-gray-600">Budget: {user.budget}</p>
-            <p className="text-gray-600">Location: {user.location}</p>
-            <p className="text-gray-600">Interests: {user.interests}</p>
+            <h3 className="text-3xl font-semibold">{user.name}</h3>
+            <p className="text-2xl font-semibold text-gray-600">Budget: {user.budget}</p>
+            <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
+            <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests}</p>
             <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg">
               Match
             </button>
