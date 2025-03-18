@@ -6,11 +6,25 @@ export interface ImageDocument {
   likes: number;
 }
 
+export enum RoomType {
+  Private = "private",
+  Shared = "shared",
+}
 
 export interface UserDocument {
   _id: string;
   username: string;
   email: string;
+  budget: number;
+  location: string;
+  preferences: {
+    roomType: RoomType;
+    smoking: boolean;
+    pets: boolean;
+  };
+  images: string[];
+  interests: string[];
+  matches: string[]; // list of user ids
 }
 
 export interface ImageWithAuthor {

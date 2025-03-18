@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { MongoClient } from "mongodb";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-dotenv.config(); // Read the .env file in the current working directory, and load values into process.env.
+dotenv.config({path: '../.env'}); // Read the .env file in the current working directory, and load values into process.env.
 
 const signatureKey = process.env.JWT_SECRET
 if (!signatureKey) {

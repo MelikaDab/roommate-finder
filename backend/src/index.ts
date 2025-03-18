@@ -22,7 +22,6 @@ async function setUpServer() {
   
   mongoClient = await MongoClient.connect(connectionString);
   const collectionInfos = await mongoClient.db().listCollections().toArray();
-  // console.log(collectionInfos.map(collectionInfo => collectionInfo.name)); // For debug only
   const app : Express = express();
   
   // middleware : code that runs before the handler functions
@@ -42,9 +41,7 @@ async function setUpServer() {
   registerAuthRoutes(app, mongoClient);
 
   app.use("/api/*", verifyAuthToken);
-  registerImageRoutes(app, mongoClient);
-
-  
+  registerImageRoutes(app, mongoClient);  
   
   app.get("*", (req: Request, res: Response) => {
     console.log("none of the routes above me were matched");
@@ -54,7 +51,6 @@ async function setUpServer() {
   app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}`);
   });
-
 
 }
 
