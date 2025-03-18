@@ -7,7 +7,13 @@ import './index.css'
 import App from './App.jsx'
 import Sidebar from './components/Sidebar.jsx';
 
-createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+createRoot(rootElement).render(
   <BrowserRouter>
     <StrictMode>
       {/* <Sidebar className="flex-1"/> */}

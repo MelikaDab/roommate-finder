@@ -1,7 +1,19 @@
+import React from "react";
 import { useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 
-const Card = ({id, user}) => {
+const Profile = () => {
+  const user = {
+    name: "Kermit the Frog",
+    budget: "$8000",
+    location: "Sandy eggo",
+    interests: "stand up comedy, music, artificial intelligence",
+    images: [
+      "../public/kermit-snow.jpg",
+      "../public/kermit-smile.webp",
+      "../public/kermit-bonjo.webp", 
+    ],
+  };
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Function to handle next image
@@ -19,7 +31,8 @@ const Card = ({id, user}) => {
   };
 
   return (
-    <div className="mb-5">
+    <div>
+      <h1 className="text-2xl font-bold p-5">My Profile</h1>
       <section className="flex flex-col justify-self-center ">
         <div className="w-200 bg-white shadow-md rounded-lg overflow-hidden flex flex-col">
           
@@ -57,12 +70,15 @@ const Card = ({id, user}) => {
           </div>
         </div>
       </section>
+      <h1 className="text-2xl font-bold p-5">Matches</h1>
+      <section>
 
+      </section>
     </div>
   );
 };
 
 
-export default Card;
+export default Profile;
 
 

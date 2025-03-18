@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "../components/Card";
+import React from "react";
 
 const sampleUsers = [
   { id: 1, name: "Mr. Bean", budget: "$900", location: "San Diego, CA", interests: "Music, Teddy bears",
@@ -10,9 +11,9 @@ const sampleUsers = [
 function Discover() {
   const [matches, setMatches] = useState([]);
 
-  const handleMatch = (user) => {
-    setMatches((prev) => [...prev, user]);
-  };
+  // const handleMatch = (user) => {
+  //   setMatches((prev) => [...prev, user]);
+  // };
 
   return (
   <div className="p-6 flex w-full flex-col">
@@ -20,7 +21,7 @@ function Discover() {
     <div className="mt-4">
       {sampleUsers.map((user) => (
 
-        <Card key={user.id} user={user} />
+        <Card id={user.id} user={user} />
       ))
       }
     </div>
