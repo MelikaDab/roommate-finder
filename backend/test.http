@@ -4,7 +4,23 @@ Content-Type: application/json
 
 { "username": "melika2", "password": "password" }
 
-### A second example, each request should be delimited by a triple hash
+###
+POST http://localhost:3000/auth/onboarding
+Content-Type: application/json
+
+{   "userId": "67da70cd46c8790c31a37237",
+    "name": "Melika Dabiri",
+    "budget": 1500,
+    "location": "San Luis Obispo",
+    "preferences": {
+        "roomType": "Private",
+        "smoking": false,
+        "pets": true
+    },
+    "images": [],
+    "interests": ["hiking", "coding", "music"]
+}
+### 
 GET http://localhost:3000/api/images
 
 ###

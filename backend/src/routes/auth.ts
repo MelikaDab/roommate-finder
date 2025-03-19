@@ -1,8 +1,10 @@
 import { CredentialsProvider } from "../CredentialsProvider";
-import express, { NextFunction, Request, Response } from "express";
-import { MongoClient } from "mongodb";
+import express, { NextFunction, Request, Response, Application } from "express";
+import { MongoClient, ObjectId } from "mongodb";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { UserDetailsProvider } from "../UserDetailsProvider";
+import { UserDocument } from "interfaces";
 dotenv.config({path: '../.env'}); // Read the .env file in the current working directory, and load values into process.env.
 
 const signatureKey = process.env.JWT_SECRET
@@ -50,6 +52,8 @@ function generateAuthToken(username: string): Promise<string> {
 export function registerAuthRoutes(app: express.Application, mongoClient: MongoClient) {
     app.post("/auth/register", async (req: Request, res: Response) => {
         const credentialsProvider = new CredentialsProvider(mongoClient);
+        // const userDetailsProvider = new UserDetailsProvider(mongoClient);
+
         const {username, password} = req.body;
         if (!username || !password) {
             res.status(400).send({
@@ -68,30 +72,59 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
             }
             const createdToken = await generateAuthToken(username);
             // console.log("created token: ",createdToken)
-            res.status(201).send({ token: createdToken })
+            res.status(201).send({ token: createdToken, result }) // the result will contain the userId if registerUser was successful
             
 
         } catch(error) {
             // console.log(error)
-            res.status(500).json("Server error")
+            res.status(500).send("Server error")
         }
 
-        // credentialsProvider.registerUser(username, password)
-        //     .then((result) => {
-        //         if (result === false) {
-        //             res.status(400).send({
-        //                 error: "Bad request",
-        //                 message: "Username already taken"
-        //             });                    
-        //         }
-        //         const createdToken = await generateAuthToken(username);
+    });
 
-        //         res.status(201).send({ token: createdToken })
-        //     })
-        //     .catch(error => res.status(500).json({ error: error.message }));
-        // res.send("register request received")
-    })
+    // Handle onboarding data submission
+    app.post("/auth/onboarding", async (req: Request, res: Response) : Promise<void> => {
 
+        const userDetailsProvider = new UserDetailsProvider(mongoClient);
+        const { userId, name, budget, location, preferences, images, interests } = req.body;
+
+        if (!userId || !name || !budget || !location || !preferences || !images || !interests) {
+            res.status(400).send({ error: "Missing required fields" });
+        }
+
+        try {
+            const userDoc: UserDocument = {
+                _id: userId, // Use the same _id as in userCreds
+                username: "", // Fetch this from userCreds before inserting
+                name,
+                budget,
+                location,
+                preferences,
+                images,
+                interests,
+                matches: [],
+            };
+
+            // Fetch the username from userCreds before inserting
+            const userCredsCollection = mongoClient.db().collection("userCreds");
+            console.log("user id: ", userId)
+            const userCreds = await userCredsCollection.findOne({ _id: new ObjectId(userId) });
+
+            if (!userCreds) {
+                res.status(404).send({ error: "User credentials not found" });
+            }
+            else {
+                
+                userDoc.username = userCreds.username;
+                await userDetailsProvider.createUser(userDoc);
+                res.status(201).send({ message: "User profile created successfully" });
+            }
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Server error");
+        }
+    });
 
     app.post("/auth/login", async (req: Request, res: Response) => {
         const { username, password } = req.body;
@@ -110,6 +143,10 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
         res.send({ token: createdToken });
 
     })
+
+ 
+
+
 
 
 }

@@ -31,12 +31,12 @@ export class CredentialsProvider {
         const hashedPassword = await bcrypt.hash(plaintextPassword, salt);
         console.log("hashed pass: ", hashedPassword)
         // Store the username and hashed password in the database
-        await this.collection.insertOne({
+        const result = await this.collection.insertOne({
             username,
             password: hashedPassword, // Salt + Hash for storage
         });
 
-        return true; // Successfully registered
+        return result.insertedId; // Successfully registered
     }
 
     async verifyPassword(username: string, plaintextPassword: string): Promise<boolean> {

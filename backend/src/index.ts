@@ -42,7 +42,7 @@ async function setUpServer() {
       res.send("Hello, World");
   });
 
-  // registerAuthRoutes(app, mongoClient);
+  registerAuthRoutes(app, mongoClient);
 
   // app.use("/api/*", verifyAuthToken);
 

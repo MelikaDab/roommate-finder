@@ -13,5 +13,13 @@ export class UserDetailsProvider {
         return users;
     }
 
+    async createUser(user: UserDocument) {
+        const db = this.mongoClient.db();
+        const usersCollection = db.collection<UserDocument>("users");
+        
+        await usersCollection.insertOne(user);
+    }
+
+
 }
 

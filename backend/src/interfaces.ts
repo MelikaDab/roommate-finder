@@ -27,6 +27,13 @@ export interface UserDocument {
   matches: string[]; // list of user ids
 }
 
+
+export interface UserCreds {
+  _id: string; // Same as UserDocument._id
+  username: string;
+  password: string; // Hashed password
+}
+
 export interface ImageWithAuthor {
     _id: string;
     src: string;
