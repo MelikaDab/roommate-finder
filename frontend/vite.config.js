@@ -11,4 +11,9 @@ export default defineConfig({
     tailwindcss(),
     checker({ typescript: true })
   ],
+  server: {
+    proxy: {
+      "/api": "http://localhost:3000" // Forwards all requests at localhost:5173/api/*
+    }
+  }
 })

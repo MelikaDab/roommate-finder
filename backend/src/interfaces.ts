@@ -14,7 +14,7 @@ export enum RoomType {
 export interface UserDocument {
   _id: string;
   username: string;
-  email: string;
+  name: string;
   budget: number;
   location: string;
   preferences: {

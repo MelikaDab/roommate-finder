@@ -4,6 +4,7 @@ import { MongoClient } from "mongodb";
 import { registerImageRoutes } from "./routes/images";
 import cors from "cors";
 import { registerAuthRoutes, verifyAuthToken } from "./routes/auth";
+import { registerUserRoutes } from "./routes/users";
 
 dotenv.config({path: '../../.env'}); // Read the .env file in the current working directory, and load values into process.env.
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,9 @@ async function setUpServer() {
   
   mongoClient = await MongoClient.connect(connectionString);
   const collectionInfos = await mongoClient.db().listCollections().toArray();
+  // console.log("db name: ", DB_NAME)
+  // console.log("collection infos: ", collectionInfos.map(collectionInfo => collectionInfo.name)); // For debug only
+
   const app : Express = express();
   
   // middleware : code that runs before the handler functions
@@ -32,16 +36,18 @@ async function setUpServer() {
     origin: "http://localhost:5173", // Allow only your frontend origin
     methods: ["GET", "POST", "PATCH", "DELETE"], // Allow specific HTTP methods
     allowedHeaders: ["Content-Type"], // Allow specific headers
-}));
+  }));
 
   app.get("/hello", (req: Request, res: Response) => {
       res.send("Hello, World");
   });
 
-  registerAuthRoutes(app, mongoClient);
+  // registerAuthRoutes(app, mongoClient);
 
-  app.use("/api/*", verifyAuthToken);
-  registerImageRoutes(app, mongoClient);  
+  // app.use("/api/*", verifyAuthToken);
+
+  // registerImageRoutes(app, mongoClient);  
+  registerUserRoutes(app, mongoClient);
   
   app.get("*", (req: Request, res: Response) => {
     console.log("none of the routes above me were matched");
