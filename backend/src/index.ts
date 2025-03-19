@@ -5,7 +5,7 @@ import { registerImageRoutes } from "./routes/images";
 import cors from "cors";
 import { registerAuthRoutes, verifyAuthToken } from "./routes/auth";
 
-dotenv.config(); // Read the .env file in the current working directory, and load values into process.env.
+dotenv.config({path: '../../.env'}); // Read the .env file in the current working directory, and load values into process.env.
 const PORT = process.env.PORT || 3000;
 const staticDir = process.env.STATIC_DIR || "public";
 
