@@ -12,7 +12,7 @@ function App() {
   const location = useLocation(); // Get the current location
 
   // Determine whether to show the sidebar
-  const showSidebar = !["/login", "/signup"].includes(location.pathname);
+  const showSidebar = !["/login", "/signup", "/onboarding"].includes(location.pathname);
 
   return (
     <div className="min-h-screen flex border">
