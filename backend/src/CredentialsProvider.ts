@@ -42,15 +42,12 @@ export class CredentialsProvider {
     async verifyPassword(username: string, plaintextPassword: string): Promise<boolean> {
         // Find user in the database
         const user = await this.collection.findOne({ username });
-        // console.log("user", user)
-        // console.log("plaintext pass: ", plaintextPassword)
         if (!user) {
             return false; // User does not exist
         }
 
         // Compare the provided password with the stored hashed password
         const result =  await bcrypt.compare(plaintextPassword, user.password);
-        // console.log("result: " , result)
         return result;
     }
 

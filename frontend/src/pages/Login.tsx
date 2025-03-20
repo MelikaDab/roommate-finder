@@ -3,7 +3,7 @@ import { sendPostRequest } from "../auth/sendPostRequest";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import dotenv from "dotenv"
-dotenv.config({path: '../.env'}); 
+dotenv.config({path: '../../../.env'}); 
 const PORT = process.env.PORT || 3000;
 const URL = process.env.APP_URL || `http://localhost:${PORT}/`;
 
