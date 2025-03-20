@@ -32,6 +32,7 @@ const Card = ({user} : Props) => {
           
           {/* Image Container */}
           
+          
           <div className="relative w-full h-150">
             <img
               src={user.images[currentImageIndex]}
@@ -53,7 +54,7 @@ const Card = ({user} : Props) => {
             >
               <SlArrowRightCircle className="w-6 h-6" />
             </button>
-          </div>
+          </div> 
 
           {/* User Information */}
           <div className="p-4">
