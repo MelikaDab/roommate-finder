@@ -2,10 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode"; // Import decoder
 
-// const URL = process.env.APP_URL || `http://localhost:${PORT}/`;
-// const URL = "https://mdabiri.csse.dev"
-const URL = "http://localhost:3000"
-
 
 const Onboarding = ({ authToken }: { authToken: string }) => {
 
@@ -55,7 +51,7 @@ const Onboarding = ({ authToken }: { authToken: string }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${URL}/auth/onboarding`, {
+      const response = await fetch(`/auth/onboarding`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

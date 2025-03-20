@@ -11,8 +11,6 @@ interface SignupResponse {
   token: string;
 }
 
-// const URL = "https://mdabiri.csse.dev"
-const URL = "http://localhost:3000"
 
 
 export default function Signup({ setToken }: SignupPageProps) {
@@ -22,7 +20,7 @@ export default function Signup({ setToken }: SignupPageProps) {
   async function handleSignup({ username, password }: { username: string; password: string }) {
     try {
       // Send request to backend
-      const responseData = await sendPostRequest<SignupResponse>(`${URL}/auth/register`, { username, password });
+      const responseData = await sendPostRequest<SignupResponse>(`/auth/register`, { username, password });
 
       console.log(responseData.token); // token
       setToken(responseData.token);

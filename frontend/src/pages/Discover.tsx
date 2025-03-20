@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Card from "../components/Card";
 import {UserDocument} from   "../../../backend/src/interfaces"
-// const URL = "https://mdabiri.csse.dev/"
-const URL = "http://localhost:3000"
+
 
 const Discover = ({ authToken }: { authToken: string }) => {
   const [users, setUsers] = useState<UserDocument[]>([]);
@@ -19,7 +18,7 @@ const Discover = ({ authToken }: { authToken: string }) => {
         const userId = decoded.userId;
 
         // Fetch current user data
-        const currentUserRes = await fetch(`${URL}/api/users/${userId}`, {
+        const currentUserRes = await fetch(`/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         if (!currentUserRes.ok) throw new Error("Failed to fetch current user");
@@ -27,7 +26,7 @@ const Discover = ({ authToken }: { authToken: string }) => {
         setCurrentUser(currentUserData);
 
         // Fetch all users
-        const usersRes = await fetch(`${URL}/api/users`, {
+        const usersRes = await fetch(`/api/users`, {
           headers: { Authorization: `Bearer ${authToken}` },
         });
         if (!usersRes.ok) throw new Error("Failed to fetch users");
@@ -73,7 +72,7 @@ const Discover = ({ authToken }: { authToken: string }) => {
 
   const handleMatch = async (matchId: string) => {
     try {
-      const response = await fetch(`${URL}/api/users/${currentUser?._id}/match`, {
+      const response = await fetch(`/api/users/${currentUser?._id}/match`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

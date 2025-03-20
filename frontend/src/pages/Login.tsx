@@ -3,9 +3,6 @@ import { sendPostRequest } from "../auth/sendPostRequest";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-// const URL = process.env.APP_URL || `http://localhost:${PORT}/`;
-// const URL = "https://mdabiri.csse.dev"
-const URL = "http://localhost:3000"
 
 interface LoginPageProps {
   setToken: (token: string) => void;
@@ -23,7 +20,7 @@ export default function Login({ setToken }: LoginPageProps) {
     console.log("Logging in user:", username, password);
     try {
       // Send request to backend
-      const responseData = await sendPostRequest<LoginResponse>(`${URL}/auth/login`, { username, password });
+      const responseData = await sendPostRequest<LoginResponse>(`/auth/login`, { username, password });
 
       console.log(responseData.token); // token
       setToken(responseData.token);

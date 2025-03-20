@@ -42,46 +42,6 @@ export function registerImageRoutes(app: express.Application, mongoClient: Mongo
     })
 
 
-// app.post(
-//     "/api/images",
-//     imageMiddlewareFactory.single("image"), // Multer middleware
-//     handleImageFileErrors, // Error-handling middleware
-//     async (req: Request, res: Response, next: NextFunction) => { 
-//         try {
-//             // Ensure both file and name exist
-//             if (!req.file || !req.body.name) {
-//                 return res.status(400).json({
-//                     error: "Bad Request",
-//                     message: "Both image file and name are required.",
-//                 });
-//             }
-
-//             // Extract user info from res.locals.token
-//             console.log(res.locals.token); // Check structure in logs
-//             const author = res.locals.token?.username ?? "Unknown"; 
-
-//             // Construct image document
-//             const newImage = {
-//                 _id: req.file.filename, 
-//                 src: `../uploads/${req.file.filename}`,
-//                 name: req.body.name,
-//                 likes: 0,
-//                 author,
-//             };
-
-//             // Insert into database
-//             const imageProvider = new ImageProvider(mongoClient);
-//             await imageProvider.createImage(newImage);
-
-//             // Respond with created document
-//             return res.status(201).json(newImage);
-//         } catch (error) {
-//             console.error("Error saving image metadata:", error);
-//             next(error); // Pass error to Express error handler
-//         }
-//     }
-// );
-
 const uploadImageHandler: RequestHandler = async (req, res, next) => {
     try {
         // Ensure both file and name exist
