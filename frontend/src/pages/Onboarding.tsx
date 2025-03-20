@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode"; // Import decoder
 
 const PORT = process.env.PORT || 3000;
-const URL = process.env.APP_URL || `http://localhost:${PORT}/`;
-
+// const URL = process.env.APP_URL || `http://localhost:${PORT}/`;
+const URL = "https://mdabiri.csse.dev"
 
 
 const Onboarding = ({ authToken }: { authToken: string }) => {

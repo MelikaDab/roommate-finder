@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 import { UserDocument } from "../../../backend/src/interfaces";
 import Card from "../components/Card";
+const URL = "https://mdabiri.csse.dev"
 
 interface User {
   _id?: string; // Include _id for the update function
@@ -30,7 +31,7 @@ const Profile = ({ authToken }: { authToken: string }) => {
           const decoded: any = jwtDecode(authToken);
           const userId = decoded.userId;
 
-          const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
+          const response = await fetch(`${URL}/api/users/${userId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -65,7 +66,7 @@ const Profile = ({ authToken }: { authToken: string }) => {
         const matchedUsersData = await Promise.all(
           user.matches.map(async (matchId) => {
             console.log("match id: ", matchId)
-            const response = await fetch(`http://localhost:3000/api/users/${matchId}`, {
+            const response = await fetch(`${URL}/api/users/${matchId}`, {
               headers: { Authorization: `Bearer ${authToken}` },
             });
             return response.ok ? await response.json() : null;
@@ -104,7 +105,7 @@ const Profile = ({ authToken }: { authToken: string }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:3000/api/users/${user?._id}`, {
+      const response = await fetch(`${URL}/api/users/${user?._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

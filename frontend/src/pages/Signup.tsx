@@ -11,6 +11,8 @@ interface SignupResponse {
   token: string;
 }
 
+const URL = "https://mdabiri.csse.dev"
+
 export default function Signup({ setToken }: SignupPageProps) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -19,7 +21,7 @@ export default function Signup({ setToken }: SignupPageProps) {
     console.log("signing up user:", username, password);
     try {
       // Send request to backend
-      const responseData = await sendPostRequest<SignupResponse>("http://localhost:3000/auth/register", { username, password });
+      const responseData = await sendPostRequest<SignupResponse>(`${URL}/auth/register`, { username, password });
 
       console.log(responseData.token); // token
       setToken(responseData.token);
