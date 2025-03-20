@@ -55,5 +55,27 @@ export class UserDetailsProvider {
         }
     }    
 
+    async updateUserMatches(userId: string, matchId: string): Promise<WithId<UserDocument> | null> {
+        const db = this.mongoClient.db();
+        const usersCollection = db.collection<UserDocument>("users");    
+        try {
+            const result = await usersCollection.updateOne(
+                { _id: userId }, // Find user by ID
+                { $addToSet: { matches: matchId } } // Add matchId to matches array, preventing duplicates
+            );
+
+            if (result.modifiedCount === 0) {
+                return null; // No user found or no changes made
+            }
+
+            // Fetch the updated user document
+            const updatedUser = await usersCollection.findOne({ _id: userId });
+            return updatedUser; // Return the updated user document
+        } catch (error) {
+            console.error("Error updating user matches:", error);
+            throw new Error("Database query failed");
+        }
+    }
+    
 }
 

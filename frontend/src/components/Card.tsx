@@ -6,9 +6,10 @@ import { UserDocument } from "../../../backend/src/interfaces";
 
 interface Props {
   user: UserDocument;
+  onMatch: (matchId: string) => void;
 }
 
-const Card = ({user} : Props) => {
+const Card = ({user, onMatch} : Props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Function to handle next image
@@ -63,6 +64,9 @@ const Card = ({user} : Props) => {
             <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
             <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests.join(", ")}</p>
           </div>
+          <button onClick={() => onMatch(user._id)} className="!bg-green-500 text-white p-2 rounded">
+            Match
+          </button>
         </div>
       </section>
 

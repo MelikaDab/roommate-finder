@@ -20,6 +20,16 @@ Content-Type: application/json
     "interests": ["Updated Interest 1", "Updated Interest 2"]
 }
 
+
+### send match request
+POST http://localhost:3000/api/users/67db6bb58d492bd01df92b3e/match
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lbGlrYWRhYiIsInVzZXJJZCI6IjY3ZGI2YmI1OGQ0OTJiZDAxZGY5MmIzZSIsImlhdCI6MTc0MjQ0MjE4MSwiZXhwIjoxNzQyNTI4NTgxfQ.f3SkvwYGqCAitGYxbCb4lR_ZYjx697e85RJKC5LYSIw
+Content-Type: application/json
+
+{
+  "matchId": "67da39f461ce575b37243676"
+}
+
 ###
 POST http://localhost:3000/auth/onboarding
 Content-Type: application/json

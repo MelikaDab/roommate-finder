@@ -66,12 +66,34 @@ const Discover = ({ authToken }: { authToken: string }) => {
     setFilteredUsers(sortedUsers);
   }, [currentUser, users]);
 
+
+  const handleMatch = async (matchId: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/${currentUser?._id}/match`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ matchId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to match user");
+      }
+
+      const data = await response.json();
+      console.log(data.message); // Confirmation message
+    } catch (error) {
+      console.error("Error matching user:", error);
+    }
+  };  
   return (
     <div className="p-6 flex w-full flex-col">
       <h1 className="text-2xl font-bold">Discover Roommates</h1>
       <div className="mt-4">
         {filteredUsers.map((user) => (
-          <Card key={user._id} user={user} />
+          <Card key={user._id} user={user} onMatch={handleMatch}/>
         ))}
       </div>
     </div>

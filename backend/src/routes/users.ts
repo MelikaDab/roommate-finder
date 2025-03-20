@@ -43,4 +43,25 @@ export function registerUserRoutes(app: express.Application, mongoClient: MongoC
     });
 
 
+    app.post("/api/users/:userId/match", async (req: Request, res: Response) => {
+        const userId = req.params.userId;
+        const { matchId } = req.body; // The ID of the user to be matched
+
+        try {
+            const userProvider = new UserDetailsProvider(mongoClient);
+
+            // Call the new method to update matches
+            const updatedUser = await userProvider.updateUserMatches(userId, matchId);
+
+            if (updatedUser) {
+                res.status(200).send({ message: "Match added successfully!" });
+            } else {
+                res.status(404).send({ error: "User not found." });
+            }
+        } catch (error) {
+            console.error("Error adding match:", error);
+            res.status(500).send("Server error");
+        }
+    });
+
 }
