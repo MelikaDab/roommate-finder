@@ -1,23 +1,6 @@
-import React from "react";
 import { useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 import { UserDocument } from "../../../backend/src/interfaces";
-
-// export interface UserDocument {
-//   _id: string;
-//   username: string;
-//   name: string;
-//   budget: number;
-//   location: string;
-//   preferences: {
-//     roomType: RoomType;
-//     smoking: boolean;
-//     pets: boolean;
-//   };
-//   images: string[];
-//   interests: string[];
-//   matches: string[]; // list of user ids
-// }
 
 
 interface Props {

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode"; // Import decoder
+import dotenv from "dotenv"
+dotenv.config({path: '../.env'}); 
+const PORT = process.env.PORT || 3000;
+const URL = process.env.APP_URL || `http://localhost:${PORT}/`;
+
 
 
 const Onboarding = ({ authToken }: { authToken: string }) => {
@@ -51,7 +56,7 @@ const Onboarding = ({ authToken }: { authToken: string }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3000/auth/onboarding", {
+      const response = await fetch(`${URL}/auth/onboarding`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
