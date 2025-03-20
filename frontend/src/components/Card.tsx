@@ -1,22 +1,14 @@
 import React from "react";
 import { useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
+import { UserDocument } from "../../../backend/src/interfaces";
 
-interface User {
-  id: number;
-  name: string;
-  budget: string;
-  location: string;
-  interests: string;
-  images: string[];
-}
 
 interface Props {
-  id: number;
-  user: User;
+  user: UserDocument;
 }
 
-const Card = ({id, user} : Props) => {
+const Card = ({user} : Props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Function to handle next image
@@ -68,7 +60,7 @@ const Card = ({id, user} : Props) => {
             <h3 className="text-3xl font-semibold">{user.name}</h3>
             <p className="text-2xl font-semibold text-gray-600">Budget: {user.budget}</p>
             <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
-            <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests}</p>
+            <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests.join(", ")}</p>
           </div>
         </div>
       </section>

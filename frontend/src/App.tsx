@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Navigate to="/discover"/>} />
 
           <Route path="/profile" element={<ProtectedRoute authToken={authToken}><Profile authToken={authToken}/></ProtectedRoute>} />
-          <Route path="/discover" element={<ProtectedRoute authToken={authToken}><Discover /></ProtectedRoute>} />
+          <Route path="/discover" element={<ProtectedRoute authToken={authToken}><Discover authToken={authToken}/></ProtectedRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute authToken={authToken}><Onboarding authToken={authToken}/></ProtectedRoute>}/>
           <Route path="/login" element={<Login setToken={setAuthToken}/>}/>
           <Route path="/signup" element={<Signup setToken={setAuthToken} />}/>
