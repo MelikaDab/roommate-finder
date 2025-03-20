@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode"; // Import decoder
 
-const Onboarding = () => {
+
+const Onboarding = ({ authToken }: { authToken: string }) => {
 
   const navigate = useNavigate();
   
@@ -14,7 +16,19 @@ const Onboarding = () => {
     images: [],
     interests: [],
   });
-
+  // Decode userId from token
+  useEffect(() => {
+    if (authToken) {
+      try {
+        const decoded: any = jwtDecode(authToken);
+        // console.log(decoded)
+        setFormData((prev) => ({ ...prev, userId: decoded.userId }));
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, [authToken]);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -30,7 +44,10 @@ const Onboarding = () => {
         },
     }));
     };
+    
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Submitting onboarding data:", formData); // Log the payload
+
     e.preventDefault();
 
     try {
@@ -66,7 +83,7 @@ const Onboarding = () => {
         {/* Preferences */}
         <div>
           <label>Room Type:</label>
-          <select name="roomType" onChange={handlePreferencesChange} className="border p-2 w-full">
+          <select name="roomType" onChange={handlePreferencesChange} value={formData.preferences.roomType} className="border p-2 w-full">
             <option value="Private">Private</option>
             <option value="Shared">Shared</option>
           </select>
