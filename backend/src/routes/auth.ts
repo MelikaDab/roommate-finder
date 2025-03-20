@@ -35,10 +35,10 @@ export function verifyAuthToken(
     }
 }
 
-function generateAuthToken(username: string): Promise<string> {
+function generateAuthToken(username: string, userId: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
         jwt.sign(
-            { username: username },
+            { username: username, userId: userId },
             signatureKey as string,
             { expiresIn: "1d" },
             (error, token) => {
@@ -70,10 +70,20 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
                     message: "Username already taken"
                 });                    
             }
-            const createdToken = await generateAuthToken(username);
-            // console.log("created token: ",createdToken)
-            res.status(201).send({ token: createdToken, result }) // the result will contain the userId if registerUser was successful
-            
+
+            // Fetch the newly created user's _id
+            const userCredsCollection = mongoClient.db().collection("userCreds");
+            const user = await userCredsCollection.findOne({ username });
+
+            if (!user) {
+                res.status(500).send("Error fetching user data");
+            }
+            else {
+
+                const createdToken = await generateAuthToken(username, user._id.toString());
+                // console.log("createdToken: ", createdToken)
+                res.status(201).send({ token: createdToken });
+            }
 
         } catch(error) {
             // console.log(error)
@@ -107,7 +117,6 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
 
             // Fetch the username from userCreds before inserting
             const userCredsCollection = mongoClient.db().collection("userCreds");
-            console.log("user id: ", userId)
             const userCreds = await userCredsCollection.findOne({ _id: new ObjectId(userId) });
 
             if (!userCreds) {
@@ -137,16 +146,24 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
         if (!isValid) {
             res.status(401).send("Incorrect username or password");
         }
-        // Create a JWT token
-        const createdToken = await generateAuthToken(username);
 
-        res.send({ token: createdToken });
+        // Fetch userId from database
+        const userCredsCollection = mongoClient.db().collection("userCreds");
+        const user = await userCredsCollection.findOne({ username });
+
+        if (!user) {
+            res.status(500).send("User not found");
+        }
+
+        else {
+            // Create a JWT token with userId
+            const createdToken = await generateAuthToken(username, user._id.toString());
+            // console.log("created token: ", createdToken)
+    
+            res.send({ token: createdToken });
+        }
 
     })
-
- 
-
-
 
 
 }

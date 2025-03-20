@@ -34,8 +34,8 @@ async function setUpServer() {
   app.use(express.json());
   app.use(cors({
     origin: "http://localhost:5173", // Allow only your frontend origin
-    methods: ["GET", "POST", "PATCH", "DELETE"], // Allow specific HTTP methods
-    allowedHeaders: ["Content-Type"], // Allow specific headers
+    methods: ["GET", "POST", "PATCH", "DELETE", "PUT"], // Allow specific HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   }));
 
   app.get("/hello", (req: Request, res: Response) => {

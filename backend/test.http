@@ -2,7 +2,23 @@
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
-{ "username": "melikadab", "password": "1234" }
+{ "username": "melikaaa", "password": "1234" }
+
+### Fetch User Profile
+GET http://localhost:3000/api/users/67db6bb58d492bd01df92b3e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lbGlrYWRhYiIsInVzZXJJZCI6IjY3ZGI2YmI1OGQ0OTJiZDAxZGY5MmIzZSIsImlhdCI6MTc0MjQzNDU3MywiZXhwIjoxNzQyNTIwOTczfQ.p3XNCx0swF-uDb0RMEcKlRbtuAgUIOJybXEt8H_Qpns
+
+### Update User Profile
+PUT http://localhost:3000/api/users/67db6bb58d492bd01df92b3e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1lbGlrYWRhYiIsInVzZXJJZCI6IjY3ZGI2YmI1OGQ0OTJiZDAxZGY5MmIzZSIsImlhdCI6MTc0MjQzNjI5OCwiZXhwIjoxNzQyNTIyNjk4fQ.I8MBDt0IA9hSzIiPKxZa-P-31N2CNAFl9rY0mMZyTlY
+Content-Type: application/json
+
+{
+    "name": "Updated Name",
+    "budget": "$9000",
+    "location": "New Location",
+    "interests": ["Updated Interest 1", "Updated Interest 2"]
+}
 
 ###
 POST http://localhost:3000/auth/onboarding
