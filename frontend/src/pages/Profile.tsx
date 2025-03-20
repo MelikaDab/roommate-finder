@@ -184,7 +184,7 @@ const Profile = ({ authToken }: { authToken: string }) => {
           <div className="p-4">
             {isEditing ? (
               <>
-              <ImageUploadForm authToken={authToken} />
+              {/* <ImageUploadForm authToken={authToken} /> */}
               <form onSubmit={handleUpdate} className="space-y-4">
                 <input
                   type="text"
