@@ -33,7 +33,7 @@ async function setUpServer() {
   app.use("/uploads", express.static(IMAGE_UPLOAD_DIR || "uploads"))
   app.use(express.json());
   app.use(cors({
-    origin: "http://localhost:5173", // Allow only your frontend origin
+    origin: ["http://localhost:5173", "https://mdabiri.csse.dev/"], // Allow only your frontend origin
     methods: ["GET", "POST", "PATCH", "DELETE", "PUT"], // Allow specific HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   }));
