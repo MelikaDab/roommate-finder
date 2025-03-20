@@ -57,3 +57,4 @@ export function handleImageFileErrors(err: any, req: Request, res: Response, nex
     }
     next(err); // Some other error, let the next middleware handle it
 }
+
