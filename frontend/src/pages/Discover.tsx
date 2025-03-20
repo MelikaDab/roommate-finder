@@ -9,11 +9,6 @@ const sampleUsers = [
 ];
 
 function Discover() {
-  const [matches, setMatches] = useState([]);
-
-  // const handleMatch = (user) => {
-  //   setMatches((prev) => [...prev, user]);
-  // };
 
   return (
   <div className="p-6 flex w-full flex-col">
@@ -30,15 +25,3 @@ function Discover() {
 }
 
 export default Discover;
-        // <div key={user.id} className="p-4 bg-white shadow-md rounded-lg mt-4">
-        //   <h3 className="text-lg font-bold">{user.name}</h3>
-        //   <p className="text-gray-600">Budget: {user.budget}</p>
-        //   <p className="text-gray-600">Location: {user.location}</p>
-        //   <p className="text-gray-600">Interests: {user.interests}</p>
-        //   <button
-        //     onClick={() => handleMatch(user)}
-        //     className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
-        //   >
-        //     Match
-        //   </button>
-        // </div>

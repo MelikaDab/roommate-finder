@@ -1,92 +1,9 @@
-// import React from "react";
-// import { useState } from "react";
-// import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
-
-// const Profile = () => {
-//   const user = {
-//     name: "Kermit the Frog",
-//     budget: "$8000",
-//     location: "Sandy eggo",
-//     interests: "stand up comedy, music, artificial intelligence",
-//     images: [
-//       "../public/kermit-snow.jpg",
-//       "../public/kermit-smile.webp",
-//       "../public/kermit-bonjo.webp", 
-//     ],
-//   };
-//   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-//   // Function to handle next image
-//   const nextImage = () => {
-//     setCurrentImageIndex((prevIndex) =>
-//       prevIndex === user.images.length - 1 ? 0 : prevIndex + 1
-//     );
-//   };
-
-//   // Function to handle previous image
-//   const prevImage = () => {
-//     setCurrentImageIndex((prevIndex) =>
-//       prevIndex === 0 ? user.images.length - 1 : prevIndex - 1
-//     );
-//   };
-
-//   return (
-//     <div>
-//       <h1 className="text-2xl font-bold p-5">My Profile</h1>
-//       <section className="flex flex-col justify-self-center ">
-//         <div className="w-200 bg-white shadow-md rounded-lg overflow-hidden flex flex-col">
-          
-//           {/* Image Container */}
-          
-//           <div className="relative w-full h-150">
-//             <img
-//               src={user.images[currentImageIndex]}
-//               alt="Profile"
-//               className="w-full h-full object-cover object-top"
-//             />
-            
-//             {/* Left and Right Navigation Buttons */}
-//             <button
-//               onClick={prevImage}
-//               className="absolute top-1/2 left-2 transform -translate-y-1/2  text-gray-400  p-2 rounded-full"
-//             >
-//               <SlArrowLeftCircle className="w-6 h-6" />
-//             </button>
-            
-//             <button
-//               onClick={nextImage}
-//               className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400  p-2 rounded-full"
-//             >
-//               <SlArrowRightCircle className="w-6 h-6" />
-//             </button>
-//           </div>
-
-//           {/* User Information */}
-//           <div className="p-4">
-//             <h3 className="text-3xl font-semibold">{user.name}</h3>
-//             <p className="text-2xl font-semibold text-gray-600">Budget: {user.budget}</p>
-//             <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
-//             <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests}</p>
-//           </div>
-//         </div>
-//       </section>
-//       <h1 className="text-2xl font-bold p-5">Matches</h1>
-//       <section>
-
-//       </section>
-//     </div>
-//   );
-// };
-
-
-// export default Profile;
-
-
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 
 interface User {
+  _id?: string; // Include _id for the update function
   name: string;
   budget: string;
   location: string;
@@ -94,23 +11,24 @@ interface User {
   images: string[];
 }
 
-const Profile = ({authToken} : {authToken: string}) => {
-  const [user, setUser] = useState<User | null>(null); // Initialize with null
+const Profile = ({ authToken }: { authToken: string }) => {
+  const [user, setUser] = useState<User | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState<User | null>(null);
 
-  // Fetch user data from the backend
   useEffect(() => {
     const fetchUserData = async () => {
       if (authToken) {
         try {
           const decoded: any = jwtDecode(authToken);
-          const userId = decoded.userId; // Extract userId from the decoded token
+          const userId = decoded.userId;
 
           const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${authToken}`, // Pass the token for authentication
+              "Authorization": `Bearer ${authToken}`,
             },
           });
 
@@ -120,6 +38,11 @@ const Profile = ({authToken} : {authToken: string}) => {
 
           const userData: User = await response.json();
           setUser(userData);
+          // setFormData(userData); // Initialize form data with user data
+          setFormData({
+            ...userData,
+            interests: Array.isArray(userData.interests) ? userData.interests : [], // Ensure interests is an array
+          });
         } catch (error) {
           console.error("Error fetching user data:", error);
         }
@@ -129,6 +52,46 @@ const Profile = ({authToken} : {authToken: string}) => {
     fetchUserData();
   }, [authToken]);
 
+  // Function to handle input changes in the edit form
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+
+    // Ensure formData is not null before updating
+    if (formData) {
+      setFormData((prev) => ({
+        ...prev!,
+        [name]: value, // Use non-null assertion
+      }));
+    }
+
+    
+  };
+
+  // Function to handle form submission for updating user info
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/${user?._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user data");
+      }
+
+      const updatedUser: User = await response.json();
+      setUser(updatedUser);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
   // Function to handle next image
   const nextImage = () => {
     if (user) {
@@ -146,47 +109,65 @@ const Profile = ({authToken} : {authToken: string}) => {
       );
     }
   };
-
-  // If user data is not yet loaded
   if (!user) {
-    return <div>Loading...</div>; // You can customize this loading state
+    return <div>Loading...</div>;
   }
+
+  console.log("Type of interests:", typeof formData?.interests);
+  console.log("Interests value:", formData?.interests);
+
 
   return (
     <div>
       <h1 className="text-2xl font-bold p-5">My Profile</h1>
       <section className="flex flex-col justify-self-center ">
         <div className="w-200 bg-white shadow-md rounded-lg overflow-hidden flex flex-col">
-          {/* Image Container */}
           <div className="relative w-full h-150">
-            <img
-              src={user.images[currentImageIndex]}
-              alt="Profile"
-              className="w-full h-full object-cover object-top"
-            />
+            <img src={user.images[currentImageIndex]} alt="Profile" className="w-full h-full object-cover object-top" />
 
-            {/* Left and Right Navigation Buttons */}
-            <button
-              onClick={prevImage}
-              className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full"
-            >
+            <button onClick={prevImage} className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full">
               <SlArrowLeftCircle className="w-6 h-6" />
             </button>
 
-            <button
-              onClick={nextImage}
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full"
-            >
+            <button onClick={nextImage} className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full">
               <SlArrowRightCircle className="w-6 h-6" />
             </button>
           </div>
 
-          {/* User Information */}
           <div className="p-4">
-            <h3 className="text-3xl font-semibold">{user.name}</h3>
-            <p className="text-2xl font-semibold text-gray-600">Budget: {user.budget}</p>
-            <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
-            <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests.join(", ")}</p>
+            {isEditing ? (
+              <form onSubmit={handleUpdate} className="space-y-4">
+                <input type="text" name="name" value={formData?.name || ""} onChange={handleInputChange} required className="border p-2 w-full" />
+                <input type="text" name="budget" value={formData?.budget || ""} onChange={handleInputChange} required className="border p-2 w-full" />
+                <input type="text" name="location" value={formData?.location || ""} onChange={handleInputChange} required className="border p-2 w-full" />
+                <textarea
+                  name="interests"
+                  value={Array.isArray(formData?.interests) ? formData.interests.join(", ") : ""}
+                  onChange={handleInputChange}
+                  placeholder="Interests (comma-separated)"
+                  className="border p-2 w-full"
+                />
+                <button type="submit" className="!bg-blue-500 text-white p-2 rounded">
+                  Save Changes
+                </button>
+              </form>
+            ) : (
+              <>
+                <h3 className="text-3xl font-semibold">{user.name}</h3>
+                <p className="text-2xl font-semibold text-gray-600">Budget: {user.budget}</p>
+                <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
+                <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests.join(", ")}</p>
+                <button
+                  onClick={() => {
+                    setIsEditing(true);
+                    setFormData(user); // Populate form with current user data
+                  }}
+                  className="!bg-green-500 text-white p-2 rounded mt-4"
+                >
+                  Edit Profile
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
