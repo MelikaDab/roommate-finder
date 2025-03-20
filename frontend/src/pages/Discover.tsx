@@ -31,8 +31,10 @@ const Discover = ({ authToken }: { authToken: string }) => {
         if (!usersRes.ok) throw new Error("Failed to fetch users");
         const allUsers: UserDocument[] = await usersRes.json();
 
-        // Remove current user from the list
-        const filtered = allUsers.filter((user) => user._id !== userId);
+        // Remove current user and current matches from the list
+        const filtered = allUsers.filter(
+            (user) => user._id !== userId && !currentUserData.matches.includes(user._id)
+        );
         setUsers(filtered);
       } catch (error) {
         console.error("Error fetching users:", error);
