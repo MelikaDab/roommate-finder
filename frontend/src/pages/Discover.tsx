@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Card from "../components/Card";
 import {UserDocument} from   "../../../backend/src/interfaces"
-const URL = "https://mdabiri.csse.dev/"
+// const URL = "https://mdabiri.csse.dev/"
+const URL = "http://localhost:3000"
 
 const Discover = ({ authToken }: { authToken: string }) => {
   const [users, setUsers] = useState<UserDocument[]>([]);

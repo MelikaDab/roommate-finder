@@ -11,14 +11,15 @@ interface SignupResponse {
   token: string;
 }
 
-const URL = "https://mdabiri.csse.dev"
+// const URL = "https://mdabiri.csse.dev"
+const URL = "http://localhost:3000"
+
 
 export default function Signup({ setToken }: SignupPageProps) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function handleSignup({ username, password }: { username: string; password: string }) {
-    console.log("signing up user:", username, password);
     try {
       // Send request to backend
       const responseData = await sendPostRequest<SignupResponse>(`${URL}/auth/register`, { username, password });
