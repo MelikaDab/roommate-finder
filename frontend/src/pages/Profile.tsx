@@ -304,27 +304,32 @@ const Profile = ({ authToken }: { authToken: string }) => {
       <h1 className="text-2xl font-bold p-5">My Profile</h1>
       <section className="flex flex-col justify-self-center">
         <div className="w-200 bg-white shadow-md rounded-lg overflow-hidden flex flex-col">
+          {
+            user.images.length > 0 ?
+
           <div className="relative w-full h-150">
-            <img
-              src={user.images[currentImageIndex]}
-              alt="Profile"
-              className="w-full h-full object-cover object-top"
-            />
 
-            <button
-              onClick={prevImage}
-              className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full"
-            >
-              <SlArrowLeftCircle className="w-6 h-6" />
-            </button>
+              <img
+                src={user.images[currentImageIndex]}
+                alt="Profile"
+                className="w-full h-full object-cover object-top"
+              />
 
-            <button
-              onClick={nextImage}
-              className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full"
-            >
-              <SlArrowRightCircle className="w-6 h-6" />
-            </button>
-          </div>
+              <button
+                onClick={prevImage}
+                className="absolute top-1/2 left-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full"
+              >
+                <SlArrowLeftCircle className="w-6 h-6" />
+              </button>
+
+              <button
+                onClick={nextImage}
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400 p-2 rounded-full"
+              >
+                <SlArrowRightCircle className="w-6 h-6" />
+              </button>
+          </div> : <></>
+          }
 
           <div className="p-4">
             {isEditing ? (
