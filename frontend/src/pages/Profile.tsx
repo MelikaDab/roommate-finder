@@ -179,6 +179,8 @@
 import { jwtDecode } from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
+import { UserDocument } from "../../../backend/src/interfaces";
+import Card from "../components/Card";
 
 interface User {
   _id?: string; // Include _id for the update function
@@ -188,6 +190,7 @@ interface User {
   interests: string[];
   roomType: string;
   images: string[];
+  matches: string[];
 }
 
 const Profile = ({ authToken }: { authToken: string }) => {
@@ -195,6 +198,8 @@ const Profile = ({ authToken }: { authToken: string }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<User | null>(null);
+  const [matchedUsers, setMatchedUsers] = useState<UserDocument[]>([]);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -229,6 +234,27 @@ const Profile = ({ authToken }: { authToken: string }) => {
 
     fetchUserData();
   }, [authToken]);
+
+  useEffect(() => {
+    const fetchMatchedUsers = async () => {
+      // Ensure user exists and matches is defined
+      if (user && Array.isArray(user.matches) && user.matches.length > 0) {
+
+        const matchedUsersData = await Promise.all(
+          user.matches.map(async (matchId) => {
+            console.log("match id: ", matchId)
+            const response = await fetch(`http://localhost:3000/api/users/${matchId}`, {
+              headers: { Authorization: `Bearer ${authToken}` },
+            });
+            return response.ok ? await response.json() : null;
+          })
+        );
+        setMatchedUsers(matchedUsersData.filter((user) => user !== null) as UserDocument[]);
+      }
+    };
+
+    fetchMatchedUsers();
+  }, [user, authToken]);
 
   // Function to handle input changes in the edit form
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -399,8 +425,14 @@ const Profile = ({ authToken }: { authToken: string }) => {
           </div>
         </div>
       </section>
-      <h1 className="text-2xl font-bold p-5">Matches</h1>
-      <section>{/* Display matches here */}</section>
+      <section>
+        <h1 className="text-2xl font-bold p-5">Matches</h1>
+        <div className="mt-4">
+          {matchedUsers.map((matchedUser) => (
+            <Card key={matchedUser._id} user={matchedUser} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

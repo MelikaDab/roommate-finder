@@ -3,10 +3,26 @@ import { useState } from "react";
 import { SlArrowRightCircle, SlArrowLeftCircle } from "react-icons/sl";
 import { UserDocument } from "../../../backend/src/interfaces";
 
+// export interface UserDocument {
+//   _id: string;
+//   username: string;
+//   name: string;
+//   budget: number;
+//   location: string;
+//   preferences: {
+//     roomType: RoomType;
+//     smoking: boolean;
+//     pets: boolean;
+//   };
+//   images: string[];
+//   interests: string[];
+//   matches: string[]; // list of user ids
+// }
+
 
 interface Props {
   user: UserDocument;
-  onMatch: (matchId: string) => void;
+  onMatch?: (matchId: string) => void;
 }
 
 const Card = ({user, onMatch} : Props) => {
@@ -64,9 +80,11 @@ const Card = ({user, onMatch} : Props) => {
             <p className="text-2xl font-semibold text-gray-600">Location: {user.location}</p>
             <p className="text-2xl font-semibold text-gray-600">Interests: {user.interests.join(", ")}</p>
           </div>
+          {onMatch && 
           <button onClick={() => onMatch(user._id)} className="!bg-green-500 text-white p-2 rounded">
             Match
           </button>
+          }
         </div>
       </section>
 
