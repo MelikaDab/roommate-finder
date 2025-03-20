@@ -11,8 +11,9 @@ export function ProtectedRoute({authToken, children}: ProtectedRouteProps) {
         return <Navigate to="/login" replace />
     }
   const hasCompletedOnboarding = localStorage.getItem("hasCompletedOnboarding");
-    if (!hasCompletedOnboarding) {
-        return  <Navigate to="/onboarding" replace />
+    // Only redirect to onboarding for other protected routes, not /onboarding itself
+    if (!hasCompletedOnboarding && window.location.pathname !== "/onboarding") {
+        return <Navigate to="/onboarding" replace />;
     }
 
 //   return hasCompletedOnboarding ? <Outlet /> : <Navigate to="/onboarding" />;

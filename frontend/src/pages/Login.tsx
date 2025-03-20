@@ -19,7 +19,7 @@ export default function Login({ setToken }: LoginPageProps) {
     console.log("Logging in user:", username, password);
     try {
       // Send request to backend
-      const responseData = await sendPostRequest<LoginResponse>("/auth/login", { username, password });
+      const responseData = await sendPostRequest<LoginResponse>("http://localhost:3000/auth/login", { username, password });
 
       console.log(responseData.token); // token
       setToken(responseData.token);

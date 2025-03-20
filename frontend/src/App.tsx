@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 function App() {
   const [authToken, setAuthToken] = useState("");
+  // console.log("in app authtoken: ", authToken)
 
   return (
     <div className="min-h-screen flex border">
