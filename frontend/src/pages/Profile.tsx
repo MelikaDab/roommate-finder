@@ -229,6 +229,14 @@ const Profile = ({ authToken }: { authToken: string }) => {
                 <button type="submit" className="!bg-blue-500 text-white p-2 rounded">
                   Save Changes
                 </button>
+                <button 
+                  onClick={() => {
+                    setIsEditing(false)
+                  }}
+                  className="!bg-red-300 text-white p-2 m-2 rounded"
+                >
+                  Cancel
+                </button>
               </form>
               </>
             ) : (
