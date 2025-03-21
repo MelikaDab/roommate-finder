@@ -60,6 +60,7 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
             error: "Bad request",
             message: "Missing username or password"
             });
+            return;
         }
 
         try {
@@ -68,7 +69,8 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
                 res.status(400).send({
                     error: "Bad request",
                     message: "Username already taken"
-                });                    
+                });           
+                return;         
             }
 
             // Fetch the newly created user's _id
@@ -77,6 +79,7 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
 
             if (!user) {
                 res.status(500).send("Error fetching user data");
+                return;
             }
             else {
 
@@ -100,6 +103,7 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
 
         if (!userId || !name || !budget || !location || !preferences || !images || !interests) {
             res.status(400).send({ error: "Missing required fields" });
+            return;
         }
 
         try {
@@ -121,6 +125,7 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
 
             if (!userCreds) {
                 res.status(404).send({ error: "User credentials not found" });
+                return;
             }
             else {
                 
@@ -136,34 +141,31 @@ export function registerAuthRoutes(app: express.Application, mongoClient: MongoC
     });
 
     app.post("/auth/login", async (req: Request, res: Response) => {
-        const { username, password } = req.body;
-        const credentialsProvider = new CredentialsProvider(mongoClient);
+    const { username, password } = req.body;
+    const credentialsProvider = new CredentialsProvider(mongoClient);
 
-        if (!username || !password) {
-            res.status(400).send("Username and password are required");
-        }
-        const isValid = await credentialsProvider.verifyPassword(username, password);
-        if (!isValid) {
-            res.status(401).send("Incorrect username or password");
-        }
+    if (!username || !password) {
+        res.status(400).send("Username and password are required");
+        return;
+    }
 
-        // Fetch userId from database
-        const userCredsCollection = mongoClient.db().collection("userCreds");
-        const user = await userCredsCollection.findOne({ username });
+    const isValid = await credentialsProvider.verifyPassword(username, password);
+    if (!isValid) {
+        res.status(401).send("Incorrect username or password");
+        return;
+    }
 
-        if (!user) {
-            res.status(500).send("User not found");
-        }
+    // Fetch userId from database
+    const userCredsCollection = mongoClient.db().collection("userCreds");
+    const user = await userCredsCollection.findOne({ username });
 
-        else {
-            // Create a JWT token with userId
-            const createdToken = await generateAuthToken(username, user._id.toString());
-            // console.log("created token: ", createdToken)
-    
-            res.send({ token: createdToken });
-        }
+    if (!user) {
+        res.status(404).send("User not found");
+        return;
+    }
 
-    })
-
-
+    // Create a JWT token with userId
+    const createdToken = await generateAuthToken(username, user._id.toString());
+    res.send({ token: createdToken });
+});
 }
