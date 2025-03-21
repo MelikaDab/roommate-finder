@@ -21,6 +21,7 @@ export function registerUserRoutes(app: express.Application, mongoClient: MongoC
         const user = await userProvider.getUserById(userId); // Implement this method to fetch user data from the database
         if (!user) {
             res.status(404).send("User not found");
+            return;
         }
         res.send(user);
     });
@@ -34,6 +35,7 @@ export function registerUserRoutes(app: express.Application, mongoClient: MongoC
             const result = await userProvider.updateUserById(userId, updatedData); // Implement this method
             if (!result) {
                 res.status(404).send("User not found or update failed");
+                return;
             }
             res.send(result); // Return the updated user
         } catch (error) {
@@ -57,6 +59,7 @@ export function registerUserRoutes(app: express.Application, mongoClient: MongoC
                 res.status(200).send({ message: "Match added successfully!" });
             } else {
                 res.status(404).send({ error: "User not found." });
+                return;
             }
         } catch (error) {
             console.error("Error adding match:", error);
